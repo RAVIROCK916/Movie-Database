@@ -35,7 +35,6 @@ Create a `.env` file and add the following:
 ```
 MONGO_URI=<your_mongo_db_uri>
 PORT=3000
-
 ```
 
 ## Usage
@@ -43,17 +42,13 @@ PORT=3000
 ### Install Dependencies
 
 ```bash
-
 npm install
-
 ```
 
 ### Run the Server
 
 ```bash
-
 npm start
-
 ```
 
 This will start the server on port 3000.
@@ -71,7 +66,6 @@ This will start the server on port 3000.
 
 ```
 npm run test
-
 ```
 
 ## Technologies
