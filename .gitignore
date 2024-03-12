@@ -1,0 +1,11 @@
+# Ignore build output
+build/
+dist/
+
+# Ignore node_modules folder 
+node_modules/
+
+# Ignore editor files
+.vscode/
+.idea/
+
