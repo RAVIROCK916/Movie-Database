@@ -5,7 +5,7 @@ This is a simple REST API for a movie database, built with Node.js, Express, Mon
 ## Features
 
 -   List all movies
--   Search movies by name
+-   Search movies by title
 -   Get a single movie by ID
 -   Add a new movie
 -   Update an existing movie
@@ -56,7 +56,7 @@ This will start the server on port 3000.
 ## API Routes
 
 -   GET `/movies` - Get all movies
--   GET `/movies/search?q=<query>` - Search movies by name
+-   GET `/movies/search?title=<query>` - Search movies by title
 -   GET `/movies/:id` - Get single movie by ID
 -   POST `/movies` - Add a new movie (Requires JSON body with movie details)
 -   PUT `/movies/:id` - Update existing movie by ID (Requires JSON body with updated data)

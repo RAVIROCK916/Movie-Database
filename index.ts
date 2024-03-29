@@ -48,6 +48,27 @@ app.get("/movies", async (req: Request, res: Response) => {
 	}
 });
 
+// display movies by title
+app.get("/movies/search", async (req: Request, res: Response) => {
+	try {
+		const { title } = req.query as { title?: string };
+		const query: { title?: { $regex: RegExp } } = {};
+		if (title) {
+			query.title = { $regex: new RegExp(title, "i") };
+		}
+
+		const movies = await collection.find(query).toArray();
+
+		if (!movies) {
+			return res.status(404).send("No movie found");
+		}
+
+		res.json(movies);
+	} catch (err) {
+		console.error("Error finding documents:", err);
+	}
+});
+
 // display movie by id
 app.get("/movies/:id", async (req: Request, res: Response) => {
 	const movieId = req.params.id; // Get movie ID from URL parameter
@@ -59,43 +80,28 @@ app.get("/movies/:id", async (req: Request, res: Response) => {
 	}
 });
 
-// search movie
-app.get("/movies/search", async (req: Request, res: Response) => {
-	try {
-		const searchCriteria = {
-			name: { $regex: new RegExp(req.query.q as string, "i") },
-		};
-		const movies = await collection.find(searchCriteria).toArray();
-		res.json(movies);
-	} catch (err) {
-		console.error("Error finding documents:", err);
-	}
-});
-
 // add movie
 app.post("/movies", async (req: Request, res: Response) => {
 	try {
-		const { name, year, genre, rating, streamingLink } = req.body;
+		const { title, year, genre, rating, streamingLink } = req.body;
 
 		const movie = {
-			name,
+			title,
 			year,
 			genre,
 			rating,
 			streamingLink,
 		};
 
-		// validate with movie schema
+		// Validate movie data
 
-		const movieSchema = new Movie(movie);
-		let isValidMovie = movieSchema.validateSync();
-		if (isValidMovie) {
+		if (!(title && genre && rating && streamingLink)) {
 			return res.status(400).send("Invalid movie data");
 		}
 
 		// Insert movie into database
 		let newMovie = await collection.insertOne(req.body);
-		res.json(newMovie);
+		res.status(201).json(movie);
 	} catch (err) {
 		console.error("Error inserting document:", err);
 	}
